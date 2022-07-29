@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/play_main_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/play_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/play_down_arrow"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+        <LinearLayout
+            android:id="@+id/play_song_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26sp"
+            android:orientation="vertical">
+
+            <!--歌名和歌手-->
+            <com.example.mymusicplayer.MarqueTextView
+                android:id="@+id/play_song_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Song"
+                android:textColor="@color/gray"
+                android:textSize="22sp"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/play_song_singer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="singer"
+                android:textColor="@color/gray"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="100dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="140dp">
+    <ImageView
+        android:id="@+id/play_icon"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/icon_empty"
+        />
+</androidx.cardview.widget.CardView>
+
+    <SeekBar
+        android:id="@+id/play_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp" />
+
+
+    <LinearLayout
+        android:id="@+id/play_control_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/btn_prev_small"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_baseline_skip_previous_24_small" />
+
+        <ImageButton
+            android:id="@+id/btn_play_small"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/ic_baseline_pause_circle_outline_24_small" />
+
+        <ImageButton
+            android:id="@+id/btn_next_small"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/ic_baseline_skip_next_24_small" />
+
+    </LinearLayout>
+</LinearLayout>
