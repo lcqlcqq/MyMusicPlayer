@@ -23,8 +23,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.ViewHolder> {
+
     MainActivity context;
-    public MusicListAdapter(MainActivity c , ArrayList<Song> list) {
+
+    public MusicListAdapter(MainActivity c, ArrayList<Song> list) {
         context = c;
     }
 
@@ -44,11 +46,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
                 Toast.makeText(view.getContext(), "点击了第" + pos + "项, 文件路径: " + _song.getPath(), Toast.LENGTH_SHORT).show();
 
                 Bundle bundle = new Bundle();
-                bundle.putInt("position",pos);
+                bundle.putInt("position", pos);
                 Intent it = new Intent(context, PlayActivity.class);
                 it.putExtras(bundle);
                 context.startActivity(it);
-                context.overridePendingTransition(R.anim.botton_in,R.anim.stop);
+                context.overridePendingTransition(R.anim.botton_in, R.anim.stop);
             }
         });
         return holder;
@@ -57,8 +59,8 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Song song = MainActivity.mList.get(position);
-        holder.itemPosition.setText(String.valueOf(position+1));
-        holder.itemIcon.setImageBitmap(MusicUtils.getAlbumPicture(null,song.getPath(),1));
+        holder.itemPosition.setText(String.valueOf(position + 1));
+        holder.itemIcon.setImageBitmap(MusicUtils.getAlbumPicture(null, song.getPath(), 1));
         holder.songName.setText(song.getSong());
         holder.songSinger.setText(song.getSinger());
         //歌曲的毫秒数
@@ -71,7 +73,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-
         View view;
         ImageView itemIcon;
         TextView itemPosition;
@@ -82,7 +83,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
             view = rootView;
-
             itemPosition = (TextView) rootView.findViewById(R.id.item_position);
             songName = (TextView) rootView.findViewById(R.id.item_song_name);
             songSinger = (TextView) rootView.findViewById(R.id.item_singer);
@@ -91,5 +91,4 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
         }
     }
-
 }
