@@ -32,17 +32,22 @@
                 android:orientation="vertical">
 
                 <!--扫描本地音乐-->
-                <Button
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="20dp">
+                <TextView
                     android:layout_width="160dp"
                     android:layout_height="50dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
+                    android:gravity="center"
                     android:text="扫描本地音乐"
-                    android:textSize="@dimen/sp_14"
-                    android:id="@+id/btn_search"
-                    app:cornerRadius="20dp"
-                    app:strokeWidth="1dp" />
+                    android:textSize="16sp"
+                     />
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
             <!--列表-->

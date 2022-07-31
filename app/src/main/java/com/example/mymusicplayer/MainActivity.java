@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +30,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btn_search;
+    private CardView btn_search;
 
     public static ArrayList<Song> mList = new ArrayList<>();
 
@@ -37,11 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-   /* private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-        }
-    };*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,27 +46,21 @@ public class MainActivity extends AppCompatActivity {
         btn_search = findViewById(R.id.btn_search);
         LinearLayout block_bottom = findViewById(R.id.bottom_music);
 
-        btn_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                permissionsRequest();
-                if (mList.size() > 0) btn_search.setVisibility(View.INVISIBLE);
-            }
+        btn_search.setOnClickListener(view -> {
+            permissionsRequest();
+            if (mList.size() > 0) btn_search.setVisibility(View.INVISIBLE);
         });
 
         //底部播放状态栏
-        block_bottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //获取当前播放的歌曲索引（从service？）
-                int pos = 0;
-                Bundle bundle = new Bundle();
-                bundle.putInt("position", pos);
-                Intent it = new Intent(MainActivity.this, PlayActivity.class);
-                it.putExtras(bundle);
-                startActivity(it);
-                overridePendingTransition(R.anim.botton_in, R.anim.stop);
-            }
+        block_bottom.setOnClickListener(view -> {
+            //获取当前播放的歌曲索引（从service？）
+            int pos = 0;
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", pos);
+            Intent it = new Intent(MainActivity.this, PlayActivity.class);
+            it.putExtras(bundle);
+            startActivity(it);
+            overridePendingTransition(R.anim.botton_in, R.anim.stop);
         });
     }
 
@@ -107,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
         //清除列表数据
         mList.clear();
         mList = MusicUtils.readMusicSongs(this);
-        Log.e("lcq", "size: " + mList.size());
-        if (mList != null && mList.size() > 0) {
+//        Log.e("lcq", "size: " + mList.size());
+        if (mList.size() > 0) {
             //显示本地音乐
             showLocalMusicData();
         } else {
@@ -120,11 +110,11 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MusicListAdapter(MainActivity.this, mList);
+        mAdapter = new MusicListAdapter(MainActivity.this);
         recyclerView.setAdapter(mAdapter);
     }
 
-    protected void show(CharSequence c) {
+    public void show(CharSequence c) {
         Toast.makeText(getApplicationContext(), c, Toast.LENGTH_SHORT).show();
     }
 }

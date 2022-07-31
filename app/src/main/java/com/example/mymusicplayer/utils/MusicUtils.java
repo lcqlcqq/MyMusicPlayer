@@ -19,6 +19,11 @@ import java.util.ArrayList;
 
 public class MusicUtils {
 
+    /**
+     * 从sdcard\Music\目录读取
+     * @param context
+     * @return
+     */
     public static ArrayList<Song> readMusicSongs(Context context) {
         //final ArrayList<File> songs = getMusicList(Environment.getExternalStorageDirectory());
 
@@ -55,11 +60,11 @@ public class MusicUtils {
      *
      * @param context 上下文
      * @param path    歌曲路径
-     * @param type 1 Activity中显示，2 通知栏中显示，3大图
+     * @param type 1 Activity中显示  2 通知栏中显示  3 详细页大图
      * @return
      */
     public static Bitmap getAlbumPicture(Context context, String path, int type) {
-        Log.e("lcq", "path: " + path );
+//        Log.e("lcq", "path: " + path );
         //歌曲检索
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         //设置数据源
@@ -70,8 +75,9 @@ public class MusicUtils {
         if (data != null) {
             //获取bitmap对象
             albumPicture = BitmapFactory.decodeByteArray(data, 0, data.length);
-            if(type == 3)  return albumPicture;
-            //获取宽高
+            if(type == 3)  // 详细页大图
+                return albumPicture;
+            // 获取宽高
             int width = albumPicture.getWidth();
             int height = albumPicture.getHeight();
             // 创建操作图片用的Matrix对象
@@ -84,7 +90,7 @@ public class MusicUtils {
             // 建立新的bitmap，其内容是对原bitmap的缩放后的图
             albumPicture = Bitmap.createBitmap(albumPicture, 0, 0, width, height, matrix, false);
         } else {
-            //从歌曲文件读取不出来专辑图片时用来代替的默认专辑图片
+            // 从歌曲文件读取不出来专辑图片时用来代替的默认专辑图片
             if(type == 1){
                 //Activity中显示
                 albumPicture = BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_music);

@@ -1,6 +1,5 @@
 package com.example.mymusicplayer.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,14 +18,11 @@ import com.example.mymusicplayer.R;
 import com.example.mymusicplayer.bean.Song;
 import com.example.mymusicplayer.utils.MusicUtils;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.ViewHolder> {
 
     MainActivity context;
 
-    public MusicListAdapter(MainActivity c, ArrayList<Song> list) {
+    public MusicListAdapter(MainActivity c) {
         context = c;
     }
 
@@ -37,21 +33,18 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         ViewHolder holder = new ViewHolder(view);
 
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = holder.getAdapterPosition();
-                Song _song = MainActivity.mList.get(pos);
+        holder.view.setOnClickListener(view1 -> {
+            int pos = holder.getAdapterPosition();
+            Song _song = MainActivity.mList.get(pos);
 
-                Toast.makeText(view.getContext(), "点击了第" + pos + "项, 文件路径: " + _song.getPath(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(view1.getContext(), "点击了第" + pos + "项, 路径: " + _song.getPath(), Toast.LENGTH_SHORT).show();
 
-                Bundle bundle = new Bundle();
-                bundle.putInt("position", pos);
-                Intent it = new Intent(context, PlayActivity.class);
-                it.putExtras(bundle);
-                context.startActivity(it);
-                context.overridePendingTransition(R.anim.botton_in, R.anim.stop);
-            }
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", pos);
+            Intent it = new Intent(context, PlayActivity.class);
+            it.putExtras(bundle);
+            context.startActivity(it);
+            context.overridePendingTransition(R.anim.botton_in, R.anim.stop);
         });
         return holder;
     }
@@ -60,11 +53,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         Song song = MainActivity.mList.get(position);
         holder.itemPosition.setText(String.valueOf(position + 1));
-        holder.itemIcon.setImageBitmap(MusicUtils.getAlbumPicture(null, song.getPath(), 1));
+        holder.itemIcon.setImageBitmap(MusicUtils.getAlbumPicture(context, song.getPath(), 1));
         holder.songName.setText(song.getSong());
         holder.songSinger.setText(song.getSinger());
-        //歌曲的毫秒数
-        holder.duration.setText(String.valueOf(song.getDuration()));
+
+        holder.duration.setText(timeFormat(song.getDuration()));
     }
 
     @Override
@@ -90,5 +83,29 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
             itemIcon = (ImageView) rootView.findViewById(R.id.item_icon);
 
         }
+    }
+
+    public static String timeFormat(int t){
+        if(t<60000){
+            return "00:" + getString((t % 60000 )/1000);
+        }else if((t>=60000)&&(t<3600000)){
+            return getString((t % 3600000)/60000)+":"+getString((t % 60000 )/1000);
+        }else {
+            return getString(t / 3600000)+":"+getString((t % 3600000)/60000)+":"+getString((t % 60000 )/1000);
+        }
+    }
+
+    private static String getString(int t){
+        String res="";
+        if(t>0){
+            if(t<10){
+                res="0"+t;
+            }else{
+                res=t+"";
+            }
+        }else{
+            res="00";
+        }
+        return res;
     }
 }
