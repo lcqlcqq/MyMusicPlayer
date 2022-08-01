@@ -72,20 +72,36 @@
                     android:layout_height="70dp"
                     android:background="@mipmap/icon_music" />
 
-                <com.example.mymusicplayer.MarqueTextView
-                    android:id="@+id/music_name"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:ellipsize="marquee"
-
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:singleLine="true"
+                    android:orientation="vertical">
 
-                    android:text="未在播放"
-                    android:textSize="20sp" />
+                    <com.example.mymusicplayer.MarqueTextView
+                        android:id="@+id/music_name"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="10dp"
+                        android:ellipsize="marquee"
+
+                        android:gravity="center_vertical"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+
+                        android:text="未在播放"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/music_singer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="4dp"
+                        android:text="群星"
+                        android:textSize="13sp" />
+                </LinearLayout>
 
                 <ImageButton
                     android:id="@+id/btn_pause_small"
@@ -93,7 +109,7 @@
                     android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="10dp"
-                    android:background="@drawable/ic_baseline_pause_circle_outline_24_small" />
+                    android:background="@drawable/ic_baseline_play_circle_outline_24" />
 
                 <ImageButton
                     android:id="@+id/btn_next_small"

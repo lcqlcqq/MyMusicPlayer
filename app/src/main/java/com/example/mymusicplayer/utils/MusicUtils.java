@@ -30,7 +30,7 @@ public class MusicUtils {
         ArrayList<Song> musicList = new ArrayList<>();
         //
         //System.out.println(Environment.getExternalStorageDirectory().getPath());Uri.parse(Environment.getExternalStorageDirectory().getPath())
-        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null,
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Audio.Media.IS_MUSIC,
                 null, MediaStore.Audio.Media.IS_MUSIC);
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -64,7 +64,7 @@ public class MusicUtils {
      * @return
      */
     public static Bitmap getAlbumPicture(Context context, String path, int type) {
-//        Log.e("lcq", "path: " + path );
+        Log.e("lcq", "path: " + path );
         //歌曲检索
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         //设置数据源

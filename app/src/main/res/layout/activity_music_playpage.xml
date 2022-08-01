@@ -33,12 +33,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Song"
-                android:textColor="@color/gray"
-                android:textSize="22sp"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:text="Song"
+                android:textColor="@color/gray"
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/play_song_singer"
@@ -54,18 +54,18 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="80dp"
         android:layout_marginBottom="100dp"
-        android:layout_gravity="center"
         app:cardCornerRadius="140dp">
-    <ImageView
-        android:id="@+id/play_icon"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:layout_gravity="center"
-        android:src="@mipmap/icon_empty"
-        />
-</androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/play_icon"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/icon_empty" />
+    </androidx.cardview.widget.CardView>
 
     <SeekBar
         android:id="@+id/play_seekbar"
@@ -74,6 +74,30 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="0"
+            android:id="@+id/cur_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/max_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="00:00"
+            android:textSize="15sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/play_control_block"
@@ -89,8 +113,16 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_baseline_skip_previous_24_small" />
 
+        <!--<ImageButton-->
+        <!--    android:id="@+id/btn_play_small"-->
+        <!--    android:layout_width="70dp"-->
+        <!--    android:layout_height="70dp"-->
+        <!--    android:layout_gravity="center_vertical"-->
+        <!--    android:layout_marginStart="20dp"-->
+        <!--    android:background="@drawable/ic_baseline_play_circle_outline_24" />-->
+
         <ImageButton
-            android:id="@+id/btn_play_small"
+            android:id="@+id/btn_pause_small"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_vertical"

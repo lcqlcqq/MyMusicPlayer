@@ -36,18 +36,17 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         holder.view.setOnClickListener(view1 -> {
             int pos = holder.getAdapterPosition();
             Song _song = MainActivity.mList.get(pos);
-
-            Toast.makeText(view1.getContext(), "点击了第" + pos + "项, 路径: " + _song.getPath(), Toast.LENGTH_SHORT).show();
-
+            //Toast.makeText(view1.getContext(), "点击了第" + pos + "项, 路径: " + _song.getPath(), Toast.LENGTH_SHORT).show();
             Bundle bundle = new Bundle();
             bundle.putInt("position", pos);
             Intent it = new Intent(context, PlayActivity.class);
             it.putExtras(bundle);
-            context.startActivity(it);
+            context.startActivityForResult(it,0x1);
             context.overridePendingTransition(R.anim.botton_in, R.anim.stop);
         });
         return holder;
     }
+
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -88,7 +87,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     public static String timeFormat(int t){
         if(t<60000){
             return "00:" + getString((t % 60000 )/1000);
-        }else if((t>=60000)&&(t<3600000)){
+        }else if(t<3600000){
             return getString((t % 3600000)/60000)+":"+getString((t % 60000 )/1000);
         }else {
             return getString(t / 3600000)+":"+getString((t % 3600000)/60000)+":"+getString((t % 60000 )/1000);
