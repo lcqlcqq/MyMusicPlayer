@@ -93,12 +93,15 @@
                         android:text="未在播放"
                         android:textSize="18sp" />
 
-                    <TextView
+                    <com.example.mymusicplayer.MarqueTextView
                         android:id="@+id/music_singer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="4dp"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
                         android:text="群星"
                         android:textSize="13sp" />
                 </LinearLayout>

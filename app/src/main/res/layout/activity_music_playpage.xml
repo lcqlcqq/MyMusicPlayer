@@ -40,11 +40,14 @@
                 android:textColor="@color/gray"
                 android:textSize="22sp" />
 
-            <TextView
+            <com.example.mymusicplayer.MarqueTextView
                 android:id="@+id/play_song_singer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
                 android:text="singer"
                 android:textColor="@color/gray"
                 android:textSize="18sp" />

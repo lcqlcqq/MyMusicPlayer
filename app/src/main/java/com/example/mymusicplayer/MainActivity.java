@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mymusicplayer.adapter.MusicListAdapter;
 import com.example.mymusicplayer.bean.Song;
 import com.example.mymusicplayer.utils.MusicUtils;
+import com.example.mymusicplayer.utils.NotificationUtil;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.ExplainReasonCallbackWithBeforeParam;
 import com.permissionx.guolindev.callback.ForwardToSettingsCallback;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public static int cur_pos = 0;
 
     private MyServiceConnection myServiceConnection;
-
+    NotificationUtil notificationUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
                 play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
             }
         });
+        notificationUtil = new NotificationUtil(getApplicationContext());
+        notificationUtil.showMusicDemoNotification();
     }
 
     @Override
@@ -193,9 +196,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 0x1 && resultCode == 0x1)
         {
-            Log.d("lcq", "destroy result");
-            Bundle bd = data.getExtras();
-            displayCurrentSongInfo();
+//            Log.d("lcq", "destroy result");
+//            Bundle bd = data.getExtras();
+//            displayCurrentSongInfo();
         }
     }
 
@@ -226,6 +229,12 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         play.setBackgroundResource(PlayActivity.stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24_small:R.drawable.ic_baseline_play_circle_outline_24);
         Log.d("lcq", "onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        notificationUtil.cancelMusicDemoNotification();
     }
 }
 
