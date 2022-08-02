@@ -10,17 +10,20 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.mymusicplayer.MainActivity;
 import com.example.mymusicplayer.R;
 import com.example.mymusicplayer.bean.Song;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class MusicUtils {
+public class MusicUtil {
 
     /**
      * 从sdcard\Music\目录读取
+     *
      * @param context
      * @return
      */
@@ -42,7 +45,7 @@ public class MusicUtils {
                 song.duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
                 song.size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
                 if (song.size > 1000 * 800) {
-                    // 注释部分是切割标题，分离出歌曲名和歌手 （本地媒体库读取的歌曲信息不规范）
+                    //切割标题，分出歌曲名和歌手
                     if (song.song.contains("-")) {
                         String[] str = song.song.split("-");
                         song.singer = str[0];
@@ -55,27 +58,31 @@ public class MusicUtils {
         }
         return musicList;
     }
+
     /**
-     * 获取专辑封面
-     *
+     * 获取专辑图
      * @param context 上下文
      * @param path    歌曲路径
-     * @param type 1 Activity中显示  2 通知栏中显示  3 详细页大图
+     * @param type    1 Activity中显示  2 通知栏中显示  3 详细页大图
      * @return
      */
     public static Bitmap getAlbumPicture(Context context, String path, int type) {
-        Log.e("lcq", "path: " + path );
+        Log.e("lcq", "path: " + path);
         //歌曲检索
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        //设置数据源
-        mmr.setDataSource(path);
+        try {
+            //设置数据源
+            mmr.setDataSource(path);
+        } catch (Exception e) {
+            Toast.makeText(context, "读取文件异常", Toast.LENGTH_SHORT).show();
+        }
         //获取图片数据
         byte[] data = mmr.getEmbeddedPicture();
         Bitmap albumPicture = null;
         if (data != null) {
             //获取bitmap对象
             albumPicture = BitmapFactory.decodeByteArray(data, 0, data.length);
-            if(type == 3)  // 详细页大图
+            if (type == 3)  // 详细页大图
                 return albumPicture;
             // 获取宽高
             int width = albumPicture.getWidth();
@@ -91,10 +98,10 @@ public class MusicUtils {
             albumPicture = Bitmap.createBitmap(albumPicture, 0, 0, width, height, matrix, false);
         } else {
             // 从歌曲文件读取不出来专辑图片时用来代替的默认专辑图片
-            if(type == 1){
+            if (type == 1) {
                 //Activity中显示
                 albumPicture = BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_music);
-            }else if(type == 2){
+            } else if (type == 2) {
                 //通知栏显示
                 albumPicture = BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_notification_default);
             }
@@ -114,7 +121,6 @@ public class MusicUtils {
         }
         return albumPicture;
     }
-
 
 
 }

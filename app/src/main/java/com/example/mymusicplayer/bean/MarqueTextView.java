@@ -1,8 +1,7 @@
-package com.example.mymusicplayer;
+package com.example.mymusicplayer.bean;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 public class MarqueTextView extends androidx.appcompat.widget.AppCompatTextView {
     public MarqueTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);

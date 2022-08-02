@@ -1,18 +1,17 @@
 package com.example.mymusicplayer;
 
+import static com.example.mymusicplayer.PlayActivity.notificationUtil;
+import static com.example.mymusicplayer.PlayActivity.receiver;
+
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymusicplayer.adapter.MusicListAdapter;
 import com.example.mymusicplayer.bean.Song;
-import com.example.mymusicplayer.utils.MusicUtils;
+import com.example.mymusicplayer.utils.MusicUtil;
 import com.example.mymusicplayer.utils.NotificationUtil;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.ExplainReasonCallbackWithBeforeParam;
@@ -41,28 +40,32 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CardView btn_search;
+
 
     public static ArrayList<Song> mList = new ArrayList<>();
+
+    public static ImageButton play;
 
     private MusicListAdapter mAdapter;
 
     private RecyclerView recyclerView;
 
-    private LinearLayout block_bottom;
+    private CardView btn_search;
 
-    private ImageButton play;
+    private LinearLayout block_bottom;
 
     private ImageButton next;
 
     public static TextView songName;
+
     public static TextView songSinger;
+
     public static ImageView songIcon;
 
     public static int cur_pos = 0;
 
     private MyServiceConnection myServiceConnection;
-    NotificationUtil notificationUtil;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,16 +87,11 @@ public class MainActivity extends AppCompatActivity {
 
         btn_search.setOnClickListener(view -> {
             permissionsRequest();
-            if (mList.size() > 0) btn_search.setVisibility(View.INVISIBLE);
+            if (mList.size() > 0) btn_search.setVisibility(View.GONE);
         });
-        //mediaPlayer = new MediaPlayer();
-
 
         //底部播放状态栏
         block_bottom.setOnClickListener(view -> {
-            //mediaPlayer.reset();
-            //mediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(MainActivity.mList.get(0).getPath()));
-            //mediaPlayer.start();
             //获取当前播放的歌曲索引
             Bundle bundle = new Bundle();
             bundle.putInt("position", cur_pos);
@@ -106,34 +104,50 @@ public class MainActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PlayActivity.stat == 1){
-                    play.setBackgroundResource(R.drawable.ic_baseline_play_circle_outline_24);
-                    PlayActivity.stat = 0;
-                    PlayActivity.musicControl.pause();
-                }else if(PlayActivity.stat == 0){
-                    play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
-                    PlayActivity.stat = 1;
-                    PlayActivity.musicControl.playContinue();
+                if(MainActivity.mList.size() > 0 && PlayActivity.musicControl != null) {
+                    if (PlayActivity.stat == 1) {
+                        play.setBackgroundResource(R.drawable.ic_baseline_play_circle_outline_24);
+                        PlayActivity.stat = 0;
+                        PlayActivity.musicControl.pause();
+                    } else if (PlayActivity.stat == 0) {
+                        play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
+                        PlayActivity.stat = 1;
+                        PlayActivity.musicControl.playContinue();
+                    }
                 }
+                notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi,PlayActivity.stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24_small:R.drawable.ic_baseline_play_circle_outline_24);
+                notificationUtil.notifyUpdateUI();
             }
         });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PlayActivity.currentSongPosition < MainActivity.mList.size()-1){
-                    ++PlayActivity.currentSongPosition;
-                }else {
-                    PlayActivity.currentSongPosition = 0;
+                if(MainActivity.mList.size() > 0 && PlayActivity.musicControl != null) {
+                    if (PlayActivity.currentSongPosition < MainActivity.mList.size() - 1) {
+                        ++PlayActivity.currentSongPosition;
+                    } else {
+                        PlayActivity.currentSongPosition = 0;
+                    }
+                    cur_pos = PlayActivity.currentSongPosition;
+                    PlayActivity.musicControl.play(MainActivity.mList.get(cur_pos).getPath());
+                    updateSongInfoButton(mList.get(cur_pos));
+                    updateSongInfoNoNavi(mList.get(cur_pos));
+                    play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
                 }
-                cur_pos = PlayActivity.currentSongPosition;
-                PlayActivity.musicControl.play(MainActivity.mList.get(cur_pos).getPath());
-                displayCurrentSongInfo();
-                play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
             }
         });
         notificationUtil = new NotificationUtil(getApplicationContext());
         notificationUtil.showMusicDemoNotification();
+        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi,PlayActivity.stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24_small:R.drawable.ic_baseline_play_circle_outline_24);
+        notificationUtil.notifyUpdateUI();
+    }
+
+    private void updateSongInfoNoNavi(Song song){
+        notificationUtil.getRemoteViews().setTextViewText(R.id.music_name_navi,song.getSong());
+        notificationUtil.getRemoteViews().setTextViewText(R.id.music_singer_navi,song.getSinger());
+        notificationUtil.getRemoteViews().setImageViewBitmap(R.id.img_navi, MusicUtil.getAlbumPicture(getApplicationContext(),song.getPath(),2));
+        notificationUtil.notifyUpdateUI();
     }
 
     @Override
@@ -176,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMusicList() {
         mList.clear();
-        mList = MusicUtils.readMusicSongs(this);
+        mList = MusicUtil.readMusicSongs(this);
         if (mList.size() > 0) {
             showLocalMusicData();
         } else {
@@ -191,22 +205,12 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MusicListAdapter(MainActivity.this);
         recyclerView.setAdapter(mAdapter);
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 0x1 && resultCode == 0x1)
-        {
-//            Log.d("lcq", "destroy result");
-//            Bundle bd = data.getExtras();
-//            displayCurrentSongInfo();
-        }
-    }
 
-    private void displayCurrentSongInfo(){
+    private void updateSongInfoButton(Song song){
         cur_pos = PlayActivity.currentSongPosition;
-        songName.setText(mList.get(cur_pos).getSong());
-        songSinger.setText(mList.get(cur_pos).getSinger());
-        songIcon.setImageBitmap(MusicUtils.getAlbumPicture(this,mList.get(cur_pos).getPath(),1));
+        songName.setText(song.getSong());
+        songSinger.setText(song.getSinger());
+        songIcon.setImageBitmap(MusicUtil.getAlbumPicture(this,song.getPath(),1));
     }
     static class MyServiceConnection implements ServiceConnection {
 
@@ -234,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(receiver);
         notificationUtil.cancelMusicDemoNotification();
     }
 }

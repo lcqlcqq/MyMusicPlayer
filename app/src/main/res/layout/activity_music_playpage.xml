@@ -28,7 +28,7 @@
             android:orientation="vertical">
 
             <!--歌名和歌手-->
-            <com.example.mymusicplayer.MarqueTextView
+            <com.example.mymusicplayer.bean.MarqueTextView
                 android:id="@+id/play_song_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:textColor="@color/gray"
                 android:textSize="22sp" />
 
-            <com.example.mymusicplayer.MarqueTextView
+            <com.example.mymusicplayer.bean.MarqueTextView
                 android:id="@+id/play_song_singer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

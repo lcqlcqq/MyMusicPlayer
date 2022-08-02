@@ -8,51 +8,5 @@
         android:orientation="vertical"
         tools:context=".ui.MainActivity">
 
-        <!--标题-->
-        <TextView
-            android:id="@+id/tv_title"
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:paddingLeft="20dp"
-            android:text="MusicPlayer"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/app_color"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <!--主要操作区域-->
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <!--本地音乐-->
-            <LinearLayout
-                android:id="@+id/lay_local_music"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@drawable/shape_app_color_radius_5"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@mipmap/ic_launcher" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="本地音乐"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_16" />
-            </LinearLayout>
-
-        </LinearLayout>
     </LinearLayout>
 </layout>

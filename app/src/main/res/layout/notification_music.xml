@@ -35,29 +35,35 @@
 
         <TextView
             android:id="@+id/music_singer_navi"
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
+
+            android:gravity="center_vertical"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+
             android:text="群星"
             android:textSize="13sp" />
     </LinearLayout>
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_prev_navi"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
         android:background="@drawable/ic_baseline_skip_previous_24_small" />
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_pause_navi"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
-        android:background="@drawable/ic_baseline_play_circle_outline_24" />
 
-    <ImageButton
+        />
+
+    <ImageView
         android:id="@+id/btn_next_navi"
         android:layout_width="35dp"
         android:layout_height="35dp"

@@ -31,11 +31,11 @@ public class NotificationUtil {
     public NotificationUtil(Context context) {
         this.context = context;
         remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_music);
-        remoteViews.setOnClickPendingIntent(R.id.btn_pause_navi,
-                PendingIntent.getBroadcast(context, 1, new Intent(
-                        PlayActivity.stat == 1 ? "pause_notification" : "play_notification"), 0));
-        //remoteViews.setOnClickPendingIntent(R.id.btn_pause_notification, PendingIntent.getBroadcast(context, 1, new Intent("pause_notification"), 0));
-        //remoteViews.setOnClickPendingIntent(R.id.btn_continue_notification, PendingIntent.getBroadcast(context, 1, new Intent("continue_notification"), 0));
+        remoteViews.setOnClickPendingIntent(R.id.btn_pause_navi,PendingIntent.getBroadcast(context, 1, new Intent("pause_notification" ), 0));
+        remoteViews.setOnClickPendingIntent(R.id.navi_music
+                , PendingIntent.getActivity(context, 1
+                , new Intent(context, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+                , PendingIntent.FLAG_UPDATE_CURRENT));
         remoteViews.setOnClickPendingIntent(R.id.btn_prev_navi, PendingIntent.getBroadcast(context, 1, new Intent("prev_notification"), 0));
         remoteViews.setOnClickPendingIntent(R.id.btn_next_navi, PendingIntent.getBroadcast(context, 1, new Intent("next_notification"), 0));
         manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -53,7 +53,7 @@ public class NotificationUtil {
     public void showMusicDemoNotification() {
         String channel_id = "my_notification";
         NotificationChannel notificationChannel = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {  //安卓8以上
             notificationChannel = new NotificationChannel(channel_id, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
             manager.createNotificationChannel(notificationChannel);
             notification = new NotificationCompat.Builder(context, channel_id)

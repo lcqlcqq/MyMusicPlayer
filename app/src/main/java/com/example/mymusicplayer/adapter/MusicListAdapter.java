@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +15,7 @@ import com.example.mymusicplayer.MainActivity;
 import com.example.mymusicplayer.PlayActivity;
 import com.example.mymusicplayer.R;
 import com.example.mymusicplayer.bean.Song;
-import com.example.mymusicplayer.utils.MusicUtils;
+import com.example.mymusicplayer.utils.MusicUtil;
 
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.ViewHolder> {
 
@@ -52,7 +51,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         Song song = MainActivity.mList.get(position);
         holder.itemPosition.setText(String.valueOf(position + 1));
-        holder.itemIcon.setImageBitmap(MusicUtils.getAlbumPicture(context, song.getPath(), 1));
+        holder.itemIcon.setImageBitmap(MusicUtil.getAlbumPicture(context, song.getPath(), 1));
         holder.songName.setText(song.getSong());
         holder.songSinger.setText(song.getSinger());
 
