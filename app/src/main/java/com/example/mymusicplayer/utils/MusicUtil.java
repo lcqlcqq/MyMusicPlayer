@@ -121,6 +121,4 @@ public class MusicUtil {
         }
         return albumPicture;
     }
-
-
 }

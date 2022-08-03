@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -26,17 +28,24 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.mymusicplayer.adapter.HomePagerAdapter;
 import com.example.mymusicplayer.adapter.MusicListAdapter;
 import com.example.mymusicplayer.bean.Song;
 import com.example.mymusicplayer.utils.MusicUtil;
 import com.example.mymusicplayer.utils.NotificationUtil;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.google.android.material.navigation.NavigationBarView;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.ExplainReasonCallbackWithBeforeParam;
 import com.permissionx.guolindev.callback.ForwardToSettingsCallback;
 import com.permissionx.guolindev.callback.RequestCallback;
 import com.permissionx.guolindev.request.ExplainScope;
 import com.permissionx.guolindev.request.ForwardScope;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
     long ViewTitleClickCnt = 0, ViewTitleClickStartTime = 0, ViewTitleClickStopTime = 0;
 
+    private ViewPager2 viewPager;
+    private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,11 +134,16 @@ public class MainActivity extends AppCompatActivity {
         songSinger = findViewById(R.id.music_singer);
         songIcon = findViewById(R.id.img_sm);
 
-        btn_search.setOnClickListener(view -> {
-            permissionsRequest();
-            if (mList.size() > 0) btn_search.setVisibility(View.GONE);
-        });
+        permissionsRequest();
+        btn_search.setVisibility(View.GONE);
+//        btn_search.setOnClickListener(view -> {
+//            permissionsRequest();
+//            if (mList.size() > 0) btn_search.setVisibility(View.GONE);
+//        });
 
+        viewPager = findViewById(R.id.mainViewPager);
+        bottomNavigationView = findViewById(R.id.navigationView);
+        initNavigationView();
         //底部播放状态栏
         block_bottom.setOnClickListener(view -> {
             if (mList.size() == 0) {
@@ -218,6 +234,58 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void initNavigationView() {
+        List<Fragment> fragmentArr = new ArrayList<Fragment>();
+        fragmentArr.add(new LocalMusicFragment());
+        fragmentArr.add(new HomeInfoFragment());
+//        fragmentArr.add(new HomeFindFragment());
+//        fragmentArr.add(new HomeMineFragment());
+
+        bottomNavigationView.getMenu().add(0, 0, 1, "首页").setIcon(R.drawable.tab_1);
+        bottomNavigationView.getMenu().add(0, 1, 1, "我的").setIcon(R.drawable.tab_2);
+//        navigationView.getMenu().add(0, 2, 1, "园地").setIcon(R.drawable.tab_3);
+//        navigationView.getMenu().add(0, 3, 1, "我的").setIcon(R.drawable.tab_4);
+        /**
+         * 否禁止用户滑动页面
+         * */
+        viewPager.setUserInputEnabled(false);
+
+        /**
+         * 设置ViewPager2的滑动监听事件
+         * isUserInputEnabled = true 时
+         * */
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                //设置导航栏选中位置
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
+        viewPager.setAdapter(new HomePagerAdapter(this, fragmentArr));
+        bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
+        /**
+         * 设置导航栏菜单项Item选中监听
+         * */
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+                viewPager.setCurrentItem(item.getItemId(),false);
+                return true;
+            }
+        });
+    }
+
     private void updateSongInfoNoNavi(Song song) {
         notificationUtil.getRemoteViews().setTextViewText(R.id.music_name_navi, song.getSong());
         notificationUtil.getRemoteViews().setTextViewText(R.id.music_singer_navi, song.getSinger());
@@ -267,20 +335,30 @@ public class MainActivity extends AppCompatActivity {
         mList.clear();
         setmList(MusicUtil.readMusicSongs(this));
         if (mList.size() > 0) {
-            showLocalMusicData();
+//            replaceFragment(new LocalMusicFragment());
+//            showLocalMusicData();
         } else {
             show("没有发现歌曲");
         }
     }
 
     private void showLocalMusicData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MusicListAdapter(MainActivity.this);
-        recyclerView.setAdapter(mAdapter);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(layoutManager);
+//        mAdapter = new MusicListAdapter(MainActivity.this);
+//        recyclerView.setAdapter(mAdapter);
     }
-
+//    private void replaceFragment(Fragment fragment) {
+//        //获取默认的Fragment管理器
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        //开始事务
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        //创建替换事件，（把布局里的fragment控件替换成传进来的具体的fragment）
+//        transaction.replace(R.id.fragment_local_music,fragment);
+//        //提交事务
+//        transaction.commit();
+//    }
 
     private void updateSongInfoButton(Song song) {
         cur_pos = PlayActivity.currentSongPosition;

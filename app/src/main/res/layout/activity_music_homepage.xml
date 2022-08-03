@@ -51,25 +51,40 @@
 
             </LinearLayout>
             <!--列表-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_music"
+<!--            <FrameLayout-->
+<!--                android:id="@+id/fragment_local_music"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_above="@+id/bottom_music"-->
+<!--                android:layout_alignParentTop="true" />-->
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/mainViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_above="@+id/bottom_music"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"/>
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rv_music"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_above="@+id/bottom_music"-->
+<!--                android:layout_alignParentTop="true" />-->
 
 
             <LinearLayout
                 android:id="@+id/bottom_music"
+                android:background="#303035"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_alignParentBottom="true"
+                android:layout_height="60dp"
+                android:layout_above="@+id/navigationView"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/img_sm"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:background="@mipmap/icon_music" />
 
                 <LinearLayout
@@ -124,6 +139,15 @@
 
             </LinearLayout>
 
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/navigationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#303030"
+                app:itemIconTint="@drawable/main_bottom"
+                app:itemTextColor="@color/gray"
+                />
         </RelativeLayout>
     </LinearLayout>
 
