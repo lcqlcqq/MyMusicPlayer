@@ -14,15 +14,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/white"
             android:layout_marginTop="16dp"
             android:text="本地音乐"
+            android:textColor="@color/white"
             android:textSize="28sp" />
 
         <RelativeLayout
-            android:layout_marginTop="36dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="36dp">
             <!--扫描音乐布局-->
             <LinearLayout
                 android:id="@+id/lay_scan_music"
@@ -37,16 +37,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="20dp">
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:gravity="center"
-                    android:text="扫描本地音乐"
-                    android:textSize="16sp"
-                     />
+
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="扫描本地音乐"
+                        android:textSize="16sp" />
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>

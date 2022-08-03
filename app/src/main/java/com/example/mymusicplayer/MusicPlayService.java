@@ -39,7 +39,7 @@ public class MusicPlayService extends Service {
                     if (mediaPlayer == null) {
                         return;
                     }
-                    Message message = PlayActivity.handler.obtainMessage();
+                    Message message = PlayActivity.handler.obtainMessage(1);
                     Bundle bundle = new Bundle();
                     bundle.putInt("duration",mediaPlayer.getDuration());
                     bundle.putInt("currentPosition",mediaPlayer.getCurrentPosition());
