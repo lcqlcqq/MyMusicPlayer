@@ -34,13 +34,13 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
         holder.view.setOnClickListener(view1 -> {
             int pos = holder.getAdapterPosition();
-            Song _song = MainActivity.mList.get(pos);
+            Song _song = MainActivity.getmList().get(pos);
             //Toast.makeText(view1.getContext(), "点击了第" + pos + "项, 路径: " + _song.getPath(), Toast.LENGTH_SHORT).show();
             Bundle bundle = new Bundle();
             bundle.putInt("position", pos);
             Intent it = new Intent(context, PlayActivity.class);
             it.putExtras(bundle);
-            context.startActivityForResult(it,0x1);
+            context.startActivity(it);
             context.overridePendingTransition(R.anim.botton_in, R.anim.stop);
         });
         return holder;
@@ -49,7 +49,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Song song = MainActivity.mList.get(position);
+        Song song = MainActivity.getmList().get(position);
         holder.itemPosition.setText(String.valueOf(position + 1));
         holder.itemIcon.setImageBitmap(MusicUtil.getAlbumPicture(context, song.getPath(), 1));
         holder.songName.setText(song.getSong());
@@ -60,7 +60,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
     @Override
     public int getItemCount() {
-        return MainActivity.mList.size();
+        return MainActivity.getmList().size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

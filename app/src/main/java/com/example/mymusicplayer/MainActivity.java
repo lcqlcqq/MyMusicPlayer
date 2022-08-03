@@ -5,6 +5,7 @@ import static com.example.mymusicplayer.PlayActivity.receiver;
 
 import android.Manifest;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -40,12 +41,19 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static ArrayList<Song> mList = new ArrayList<>();
 
+    public static ArrayList<Song> getmList(){
+        return mList;
+    }
+    private static void setmList(ArrayList<Song> lst){
+        mList = lst;
+    }
+    private static ImageButton play;
 
-    public static ArrayList<Song> mList = new ArrayList<>();
-
-    public static ImageButton play;
-
+    public static void setPlayBtnImg(int drawableId){
+        play.setBackgroundResource(drawableId);
+    }
     private MusicListAdapter mAdapter;
 
     private RecyclerView recyclerView;
@@ -56,13 +64,31 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton next;
 
-    public static TextView songName;
+    private static TextView songName;
 
-    public static TextView songSinger;
+    public static void setSongName(int pos){
+        songName.setText(mList.get(pos).getSong());
+    }
 
-    public static ImageView songIcon;
+    private static TextView songSinger;
 
-    public static int cur_pos = 0;
+    public static void setSongSinger(int pos){
+        songSinger.setText(mList.get(pos).getSinger());
+    }
+    private static ImageView songIcon;
+
+    public static void setSongIcon(int pos, Context context){
+        songIcon.setImageBitmap(MusicUtil.getAlbumPicture(context, MainActivity.getmList().get(pos).getPath(), 1));
+    }
+
+    private static int cur_pos = 0;
+
+    public static int getCurPos(){
+        return cur_pos;
+    }
+    public static void setCurPos(int p){
+        cur_pos = p;
+    }
 
     private MyServiceConnection myServiceConnection;
 
@@ -190,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMusicList() {
         mList.clear();
-        mList = MusicUtil.readMusicSongs(this);
+        setmList(MusicUtil.readMusicSongs(this));
         if (mList.size() > 0) {
             showLocalMusicData();
         } else {

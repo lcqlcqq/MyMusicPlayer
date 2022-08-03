@@ -85,18 +85,18 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_weight="0"
             android:id="@+id/cur_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:text="00:00"
             android:textSize="15sp" />
 
         <TextView
-            android:layout_weight="1"
             android:id="@+id/max_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="end"
             android:text="00:00"
             android:textSize="15sp" />
@@ -110,22 +110,14 @@
         android:gravity="center">
 
         <ImageButton
-            android:id="@+id/btn_prev_small"
+            android:id="@+id/play_btn_prev"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_baseline_skip_previous_24_small" />
 
-        <!--<ImageButton-->
-        <!--    android:id="@+id/btn_play_small"-->
-        <!--    android:layout_width="70dp"-->
-        <!--    android:layout_height="70dp"-->
-        <!--    android:layout_gravity="center_vertical"-->
-        <!--    android:layout_marginStart="20dp"-->
-        <!--    android:background="@drawable/ic_baseline_play_circle_outline_24" />-->
-
         <ImageButton
-            android:id="@+id/btn_pause_small"
+            android:id="@+id/play_btn_pause"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_vertical"
