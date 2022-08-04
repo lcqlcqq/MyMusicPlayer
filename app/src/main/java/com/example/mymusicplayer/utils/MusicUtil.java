@@ -104,6 +104,8 @@ public class MusicUtil {
             } else if (type == 2) {
                 //通知栏显示
                 albumPicture = BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_notification_default);
+            }else if (type == 3){
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_notification_default);
             }
 
             int width = albumPicture.getWidth();

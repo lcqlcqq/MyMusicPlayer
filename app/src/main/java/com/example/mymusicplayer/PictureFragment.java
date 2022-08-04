@@ -59,7 +59,9 @@ public class PictureFragment extends Fragment {
                     Toast.makeText(root.getContext(), "图片加载完毕", Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                    Toast.makeText(root.getContext(), "图片加载异常", Toast.LENGTH_SHORT).show();
+                    Glide.with(root.getContext()).load(PictureUtil.getFormatPath(glide_url).replaceAll("\\\\", "")).into(imgPic);
+                    imgPic.setVisibility(View.VISIBLE);
+//                    Toast.makeText(root.getContext(), "图片加载异常", Toast.LENGTH_SHORT).show();
                 default:
                     break;
             }
@@ -123,30 +125,22 @@ public class PictureFragment extends Fragment {
             }
         });
         btn_webView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             JSONObject jsonObject = new JSONObject(PictureUtil.getJson(URL));
                             glide_url = jsonObject.getString("pic");
+                            handler.sendEmptyMessage(2);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }).start();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Log.d("lcq", "url: " + PictureUtil.getFormatPath(glide_url));
-
-                Glide.with(root.getContext()).load(PictureUtil.getFormatPath(glide_url).replaceAll("\\\\", "")).into(imgPic);
-
-                imgPic.setVisibility(View.VISIBLE);
-                //handler.sendEmptyMessage(1);
             }
         });
         return root;
