@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.mymusicplayer.adapter.MusicListAdapter;
 
@@ -19,6 +22,8 @@ public class LocalMusicFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private MusicListAdapter mAdapter;
+
+
 
     public LocalMusicFragment() {
     }
@@ -39,6 +44,22 @@ public class LocalMusicFragment extends Fragment {
             mAdapter = new MusicListAdapter((MainActivity) this.getActivity());
             recyclerView.setAdapter(mAdapter);
         }
+        MainActivity.editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mAdapter.getFilter().filter(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         return root;
     }
 }

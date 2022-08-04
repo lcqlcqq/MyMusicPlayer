@@ -3,27 +3,33 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.16" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_pause_circle_outline_24_black.xml" value="0.16" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_pause_circle_outline_24_small.xml" value="0.1545" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_play_circle_outline_24.xml" value="0.16" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_play_circle_outline_24_black.xml" value="0.16" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_skip_next_24_small.xml" value="0.1545" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_skip_next_24_small_black.xml" value="0.16" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_skip_previous_24_small.xml" value="0.195" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_baseline_skip_previous_24_small_black.xml" value="0.16" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/icon_return.xml" value="0.1185" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/shape_app_color_radius_5.xml" value="0.1525" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout-v23/music_item.xml" value="0.2734375" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/activity_music_homepage.xml" value="0.22" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/activity_music_homepage.xml" value="0.33" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/activity_music_playpage.xml" value="0.25" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/fragment_layout.xml" value="0.30055579307396324" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/fragment_local_music.xml" value="0.1718683197947841" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/fragment_picture.xml" value="0.33" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/fragment_player_navi.xml" value="0.25" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/music_item.xml" value="0.33" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/notification_music.xml" value="0.67" />
+        <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/picture_longclick_menu.xml" value="0.22" />
         <entry key="..\:/Users/UIDQ5599/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/player_navi.xml" value="0.15" />
-        <entry key="..\:/androidpro/MyMusicPlayer/app/src/main/res/drawable/main_bottom.xml" value="0.1565" />
-        <entry key="..\:/androidpro/MyMusicPlayer/app/src/main/res/layout/activity_music_homepage.xml" value="0.264" />
+        <entry key="..\:/androidpro/MyMusicPlayer/app/src/main/res/layout/activity_music_homepage.xml" value="0.4532871972318339" />
         <entry key="..\:/androidpro/MyMusicPlayer/app/src/main/res/layout/activity_music_playpage.xml" value="0.20820863616930313" />
-        <entry key="..\:/androidpro/MyMusicPlayer/app/src/main/res/layout/fragment_home_info.xml" value="0.12056434373663959" />
-        <entry key="..\:/androidpro/MyMusicPlayer/app/src/main/res/layout/fragment_local_music.xml" value="0.20820863616930313" />
         <entry key="..\:/androidpro/MyMusicPlayer/app/src/main/res/layout/music_item.xml" value="0.4" />
-        <entry key="..\:/androidpro/MyMusicPlayer/app/src/main/res/layout/notification_music.xml" value="0.10175511909736733" />
       </map>
     </option>
   </component>

@@ -53,14 +53,13 @@
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
-        android:background="@drawable/ic_baseline_skip_previous_24_small" />
+        android:background="@drawable/ic_baseline_skip_previous_24_small_black" />
     <ImageView
         android:id="@+id/btn_pause_navi"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
-
         />
 
     <ImageView
@@ -69,6 +68,6 @@
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
-        android:background="@drawable/ic_baseline_skip_next_24_small" />
+        android:background="@drawable/ic_baseline_skip_next_24_small_black" />
 
 </LinearLayout>

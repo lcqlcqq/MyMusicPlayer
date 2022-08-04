@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +53,9 @@ public class PlayActivity extends AppCompatActivity {
     private ImageButton prevBtn;
     private ImageButton pauseBtn;
     private ImageButton nextBtn;
+    private ImageButton patternBtn;
+    private ImageButton listBtn;
+    private static int play_pattern; //0列表循环，1单曲循环，2随机
 
     public static int currentSongPosition = -1;
     private boolean isSameAsCurSong = true;
@@ -86,8 +90,6 @@ public class PlayActivity extends AppCompatActivity {
                     curDuration.setText(MusicListAdapter.timeFormat(currentPosition));
                     break;
             }
-
-
         }
     };
 
@@ -115,10 +117,27 @@ public class PlayActivity extends AppCompatActivity {
 
         playToolbar = (LinearLayout) findViewById(R.id.play_toolbar);
         seekBar = (SeekBar) findViewById(R.id.play_seekbar);
+        listBtn = findViewById(R.id.play_btn_list);
+        patternBtn = findViewById(R.id.play_btn_pattern);
+        patternBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPatternBtnBackground();
+            }
+        });
+        if(play_pattern == 1){
+            patternBtn.setBackgroundResource(R.drawable.ic_baseline_repeat_one_24);
+        }
+        else if(play_pattern == 2){
+            patternBtn.setBackgroundResource(R.drawable.ic_baseline_shuffle_24);
+        }
+        else {
+            patternBtn.setBackgroundResource(R.drawable.ic_baseline_repeat_24);
+        }
         prevBtn = (ImageButton) findViewById(R.id.play_btn_prev);
         nextBtn = (ImageButton) findViewById(R.id.btn_next_small);
         pauseBtn = (ImageButton) findViewById(R.id.play_btn_pause);
-        pauseBtn.setBackgroundResource(stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24_small : R.drawable.ic_baseline_play_circle_outline_24);
+        pauseBtn.setBackgroundResource(stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24 : R.drawable.ic_baseline_play_circle_outline_24);
 
         songName = (TextView) findViewById(R.id.play_song_name);
         songSinger = (TextView) findViewById(R.id.play_song_singer);
@@ -127,7 +146,8 @@ public class PlayActivity extends AppCompatActivity {
         curDuration = (TextView) findViewById(R.id.cur_duration);
 
         displaySongInformation(MainActivity.getmList().get(currentSongPosition));
-        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24_small : R.drawable.ic_baseline_play_circle_outline_24);
+        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, stat == 1 ?
+                R.drawable.ic_baseline_pause_circle_outline_24_black : R.drawable.ic_baseline_play_circle_outline_24_black);
         displaySongInfoOnNavi(MainActivity.getmList().get(currentSongPosition));
 
         backBtn = (ImageView) findViewById(R.id.play_down_arrow);
@@ -136,7 +156,7 @@ public class PlayActivity extends AppCompatActivity {
             public void onClick(View view) {
                 onBackPressed();
                 stopRotateIcon();
-                overridePendingTransition(R.anim.stop, R.anim.botton_out);
+                overridePendingTransition(R.anim.stop, R.anim.bottom_out);
             }
         });
 
@@ -183,6 +203,24 @@ public class PlayActivity extends AppCompatActivity {
         initRotateAnim();
     }
 
+    private void setPatternBtnBackground() {
+        if(play_pattern == 0){
+            play_pattern++;
+            patternBtn.setBackgroundResource(R.drawable.ic_baseline_repeat_one_24);
+            Toast.makeText(getApplicationContext(),"单曲循环", Toast.LENGTH_SHORT).show();
+        }
+        else if(play_pattern == 1){
+            play_pattern++;
+            patternBtn.setBackgroundResource(R.drawable.ic_baseline_shuffle_24);
+            Toast.makeText(getApplicationContext(),"随机播放", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            play_pattern=0;
+            patternBtn.setBackgroundResource(R.drawable.ic_baseline_repeat_24);
+            Toast.makeText(getApplicationContext(),"顺序播放", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * 初始化动画，从上次保存的位置开始
      */
@@ -205,7 +243,7 @@ public class PlayActivity extends AppCompatActivity {
     private void pause() {
         pauseBtn.setBackgroundResource(R.drawable.ic_baseline_play_circle_outline_24);
         //MainActivity.setPlayBtnImg(R.drawable.ic_baseline_play_circle_outline_24);
-        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_play_circle_outline_24);
+        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_play_circle_outline_24_black);
         notificationUtil.notifyUpdateUI();
         stat = 0;
         musicControl.pause();
@@ -216,9 +254,9 @@ public class PlayActivity extends AppCompatActivity {
      * 继续播放
      */
     private void playContinue() {
-        pauseBtn.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
+        pauseBtn.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24);
         //MainActivity.setPlayBtnImg(R.drawable.ic_baseline_pause_circle_outline_24_small);
-        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_pause_circle_outline_24_small);
+        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_pause_circle_outline_24_black);
         notificationUtil.notifyUpdateUI();
         stat = 1;
         musicControl.playContinue();
@@ -229,17 +267,22 @@ public class PlayActivity extends AppCompatActivity {
      * 下一首
      */
     private void playNext() {
-        if (currentSongPosition < MainActivity.getmList().size() - 1) {  //列表循环
-            ++currentSongPosition;
-        } else {
-            currentSongPosition = 0;
+        if(play_pattern == 0 || play_pattern == 1){  //顺序播放，单曲循环
+            if (currentSongPosition < MainActivity.getmList().size() - 1) {
+                ++currentSongPosition;
+            } else {
+                currentSongPosition = 0;
+            }
+        }else if(play_pattern == 2){
+            //随机
         }
+
         stat = 1;
-        pauseBtn.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
+        pauseBtn.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24);
         displaySongInformation(MainActivity.getmList().get(currentSongPosition));
         startRotateIcon();
         musicControl.play(MainActivity.getmList().get(currentSongPosition).getPath());
-        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_pause_circle_outline_24_small);
+        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_pause_circle_outline_24_black);
         displaySongInfoOnNavi(MainActivity.getmList().get(currentSongPosition));
     }
 
@@ -247,18 +290,22 @@ public class PlayActivity extends AppCompatActivity {
      * 上一首
      */
     private void playPrev() {
-        if (currentSongPosition > 0) {  //列表循环
-            --currentSongPosition;
-        } else if (currentSongPosition == 0) {
-            currentSongPosition = MainActivity.getmList().size() - 1;
+        if(play_pattern == 0 || play_pattern == 1){  //顺序播放，单曲循环
+            if (currentSongPosition > 0) {  //列表循环
+                --currentSongPosition;
+            } else if (currentSongPosition == 0) {
+                currentSongPosition = MainActivity.getmList().size() - 1;
+            }
+        }else if(play_pattern == 2){
+            //随机
         }
         stat = 1;
         //更新当前页和通知的信息
-        pauseBtn.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
+        pauseBtn.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24);
         displaySongInformation(MainActivity.getmList().get(currentSongPosition));
         startRotateIcon();
         musicControl.play(MainActivity.getmList().get(currentSongPosition).getPath());
-        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_pause_circle_outline_24_small);
+        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_pause_circle_outline_24_black);
         displaySongInfoOnNavi(MainActivity.getmList().get(currentSongPosition));
     }
 
@@ -288,6 +335,7 @@ public class PlayActivity extends AppCompatActivity {
      * @param song 当前播放的歌
      */
     private void displaySongInformation(Song song) {
+        if(songName == null || songSinger == null || songIcon == null) return;
         songName.setText(song.getSong());
         songSinger.setText(song.getSinger());
         songIcon.setImageBitmap(MusicUtil.getAlbumPicture(PlayActivity.this, song.getPath(), 3));  //大图
@@ -337,7 +385,7 @@ public class PlayActivity extends AppCompatActivity {
      */
     private void changeButtonSongInfo(int pos) {
         MainActivity.setCurPos(pos);
-        MainActivity.setPlayBtnImg(R.drawable.ic_baseline_pause_circle_outline_24_small);
+        MainActivity.setPlayBtnImg(R.drawable.ic_baseline_pause_circle_outline_24);
         MainActivity.setSongName(pos);
         MainActivity.setSongSinger(pos);
         MainActivity.setSongIcon(pos, getApplicationContext());
@@ -359,7 +407,7 @@ public class PlayActivity extends AppCompatActivity {
                         MainActivity.setPlayBtnImg(R.drawable.ic_baseline_play_circle_outline_24);
                         pause();
                     } else {
-                        MainActivity.setPlayBtnImg(R.drawable.ic_baseline_pause_circle_outline_24_small);
+                        MainActivity.setPlayBtnImg(R.drawable.ic_baseline_pause_circle_outline_24);
                         playContinue();
                     }
                     break;

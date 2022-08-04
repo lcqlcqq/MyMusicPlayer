@@ -110,10 +110,19 @@
         android:gravity="center">
 
         <ImageButton
-            android:id="@+id/play_btn_prev"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/play_btn_pattern"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
+
+            android:background="@drawable/ic_baseline_repeat_24" />
+
+        <ImageButton
+            android:id="@+id/play_btn_prev"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="24dp"
             android:background="@drawable/ic_baseline_skip_previous_24_small" />
 
         <ImageButton
@@ -122,15 +131,23 @@
             android:layout_height="70dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:background="@drawable/ic_baseline_pause_circle_outline_24_small" />
+            android:background="@drawable/ic_baseline_pause_circle_outline_24" />
 
         <ImageButton
             android:id="@+id/btn_next_small"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:background="@drawable/ic_baseline_skip_next_24_small" />
+
+        <ImageButton
+            android:id="@+id/play_btn_list"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/ic_baseline_queue_music_24" />
 
     </LinearLayout>
 </LinearLayout>

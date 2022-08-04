@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,19 +26,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mymusicplayer.adapter.HomePagerAdapter;
-import com.example.mymusicplayer.adapter.MusicListAdapter;
 import com.example.mymusicplayer.bean.Song;
 import com.example.mymusicplayer.utils.MusicUtil;
 import com.example.mymusicplayer.utils.NotificationUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.navigation.NavigationBarView;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.ExplainReasonCallbackWithBeforeParam;
@@ -55,23 +51,26 @@ public class MainActivity extends AppCompatActivity {
 
     private static ArrayList<Song> mList = new ArrayList<>();
 
+    private static ArrayList<Song> allList = new ArrayList<>();
+
     public static ArrayList<Song> getmList() {
         return mList;
     }
 
-    private static void setmList(ArrayList<Song> lst) {
+    public static void setmList(ArrayList<Song> lst) {
         mList = lst;
     }
+
+    public static ArrayList<Song> getAllList() {
+        return allList;
+    }
+
 
     private static ImageButton play;
 
     public static void setPlayBtnImg(int drawableId) {
         play.setBackgroundResource(drawableId);
     }
-
-    private MusicListAdapter mAdapter;
-
-    private RecyclerView recyclerView;
 
     private CardView btn_search;
 
@@ -115,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private BottomNavigationView bottomNavigationView;
+
+    public static EditText editText;
+    //private ImageView btn_search_list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,23 +130,42 @@ public class MainActivity extends AppCompatActivity {
 
         btn_search = findViewById(R.id.btn_search);
         block_bottom = findViewById(R.id.bottom_music);
-        recyclerView = findViewById(R.id.rv_music);
+        //recyclerView = findViewById(R.id.rv_music);
         play = findViewById(R.id.btn_pause_small);
         next = findViewById(R.id.btn_next_small);
         songName = findViewById(R.id.music_name);
         songSinger = findViewById(R.id.music_singer);
         songIcon = findViewById(R.id.img_sm);
+        editText = findViewById(R.id.search_edit);
 
+        //draggingButton.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        Toast.makeText(MainActivity.this, "click", Toast.LENGTH_SHORT).show();
+        //    }
+        //});
+
+        viewPager = findViewById(R.id.mainViewPager);
+        bottomNavigationView = findViewById(R.id.navigationView);
         permissionsRequest();
         btn_search.setVisibility(View.GONE);
+        //editText.setVisibility(View.INVISIBLE);
+
 //        btn_search.setOnClickListener(view -> {
 //            permissionsRequest();
 //            if (mList.size() > 0) btn_search.setVisibility(View.GONE);
 //        });
+//        btn_search_list = findViewById(R.id.btn_search_list_filter);
+//        btn_search_list.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (editText.getVisibility() == View.INVISIBLE)
+//                    editText.setVisibility(View.VISIBLE);
+//                else
+//                    editText.setVisibility(View.INVISIBLE);
+//            }
+//        });
 
-        viewPager = findViewById(R.id.mainViewPager);
-        bottomNavigationView = findViewById(R.id.navigationView);
-        initNavigationView();
         //底部播放状态栏
         block_bottom.setOnClickListener(view -> {
             if (mList.size() == 0) {
@@ -156,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             Intent it = new Intent(MainActivity.this, PlayActivity.class);
             it.putExtras(bundle);
             startActivity(it);
-            overridePendingTransition(R.anim.botton_in, R.anim.stop);
+            overridePendingTransition(R.anim.bottom_in, R.anim.stop);
         });
 
         play.setOnClickListener(new View.OnClickListener() {
@@ -168,12 +190,13 @@ public class MainActivity extends AppCompatActivity {
                         PlayActivity.stat = 0;
                         PlayActivity.musicControl.pause();
                     } else if (PlayActivity.stat == 0) {
-                        play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
+                        play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24);
                         PlayActivity.stat = 1;
                         PlayActivity.musicControl.playContinue();
                     }
                 }
-                notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, PlayActivity.stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24_small : R.drawable.ic_baseline_play_circle_outline_24);
+                notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, PlayActivity.stat == 1 ?
+                        R.drawable.ic_baseline_pause_circle_outline_24_black : R.drawable.ic_baseline_play_circle_outline_24_black);
                 notificationUtil.notifyUpdateUI();
             }
         });
@@ -191,13 +214,14 @@ public class MainActivity extends AppCompatActivity {
                     PlayActivity.musicControl.play(MainActivity.mList.get(cur_pos).getPath());
                     updateSongInfoButton(mList.get(cur_pos));
                     updateSongInfoNoNavi(mList.get(cur_pos));
-                    play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24_small);
+                    play.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24);
                 }
             }
         });
         notificationUtil = new NotificationUtil(getApplicationContext());
         notificationUtil.showMusicDemoNotification();
-        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, PlayActivity.stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24_small : R.drawable.ic_baseline_play_circle_outline_24);
+        notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, PlayActivity.stat == 1 ?
+                R.drawable.ic_baseline_pause_circle_outline_24_black : R.drawable.ic_baseline_play_circle_outline_24_black);
         notificationUtil.notifyUpdateUI();
 
         tv_title.setOnClickListener(new View.OnClickListener() {
@@ -235,21 +259,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNavigationView() {
-        List<Fragment> fragmentArr = new ArrayList<Fragment>();
+        List<Fragment> fragmentArr = new ArrayList<>();
         fragmentArr.add(new LocalMusicFragment());
-        fragmentArr.add(new HomeInfoFragment());
-//        fragmentArr.add(new HomeFindFragment());
-//        fragmentArr.add(new HomeMineFragment());
+        fragmentArr.add(new PictureFragment());
 
         bottomNavigationView.getMenu().add(0, 0, 1, "首页").setIcon(R.drawable.tab_1);
-        bottomNavigationView.getMenu().add(0, 1, 1, "我的").setIcon(R.drawable.tab_2);
-//        navigationView.getMenu().add(0, 2, 1, "园地").setIcon(R.drawable.tab_3);
-//        navigationView.getMenu().add(0, 3, 1, "我的").setIcon(R.drawable.tab_4);
-        /**
-         * 否禁止用户滑动页面
-         * */
+        bottomNavigationView.getMenu().add(0, 1, 1, "图片").setIcon(R.drawable.tab_3);
+        //navigationView.getMenu().add(0, 2, 1, "园地").setIcon(R.drawable.tab_3);
+        //navigationView.getMenu().add(0, 3, 1, "我的").setIcon(R.drawable.tab_4);
+        //禁止滑动
         viewPager.setUserInputEnabled(false);
-
         /**
          * 设置ViewPager2的滑动监听事件
          * isUserInputEnabled = true 时
@@ -274,13 +293,25 @@ public class MainActivity extends AppCompatActivity {
         });
         viewPager.setAdapter(new HomePagerAdapter(this, fragmentArr));
         bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
+        //去掉底部长按波纹效果
+        bottomNavigationView.setItemBackground(null);
+        //去掉导航长按显示toast
+        ViewGroup bottomNavigationMenuView = (ViewGroup) bottomNavigationView.getChildAt(0);
+        for (int i = 0; i < fragmentArr.size(); i++) {
+            bottomNavigationMenuView.getChildAt(i).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    return true;
+                }
+            });
+        }
         /**
          * 设置导航栏菜单项Item选中监听
          * */
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
-                viewPager.setCurrentItem(item.getItemId(),false);
+                viewPager.setCurrentItem(item.getItemId(), false);
                 return true;
             }
         });
@@ -332,14 +363,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getMusicList() {
-        mList.clear();
-        setmList(MusicUtil.readMusicSongs(this));
-        if (mList.size() > 0) {
-//            replaceFragment(new LocalMusicFragment());
-//            showLocalMusicData();
+        allList.clear();
+        setAllList(MusicUtil.readMusicSongs(this));
+        setmList(getAllList());
+        Log.e("lcq", "mList: " + mList.size() + ", allList: " + allList.size());
+        if (allList.size() > 0) {
+            initNavigationView();
         } else {
             show("没有发现歌曲");
         }
+    }
+
+    private void setAllList(ArrayList<Song> readMusicSongs) {
+        allList = readMusicSongs;
     }
 
     private void showLocalMusicData() {
@@ -387,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        play.setBackgroundResource(PlayActivity.stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24_small : R.drawable.ic_baseline_play_circle_outline_24);
+        play.setBackgroundResource(PlayActivity.stat == 1 ? R.drawable.ic_baseline_pause_circle_outline_24 : R.drawable.ic_baseline_play_circle_outline_24);
         Log.d("lcq", "onResume");
     }
 
