@@ -45,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -115,8 +116,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private BottomNavigationView bottomNavigationView;
 
+    private LinearLayout searchNavi;
     public static EditText editText;
-    //private ImageView btn_search_list;
+    private ImageView btn_clear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +138,15 @@ public class MainActivity extends AppCompatActivity {
         songName = findViewById(R.id.music_name);
         songSinger = findViewById(R.id.music_singer);
         songIcon = findViewById(R.id.img_sm);
+        searchNavi = findViewById(R.id.search_navi);
         editText = findViewById(R.id.search_edit);
-
+        btn_clear = findViewById(R.id.btn_clear_search_filter);
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText.getText().clear();
+            }
+        });
         //draggingButton.setOnClickListener(new View.OnClickListener() {
         //    @Override
         //    public void onClick(View v) {
@@ -205,11 +214,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (MainActivity.mList.size() > 0 && PlayActivity.musicControl != null) {
-                    if (PlayActivity.currentSongPosition < MainActivity.mList.size() - 1) {
-                        ++PlayActivity.currentSongPosition;
-                    } else {
-                        PlayActivity.currentSongPosition = 0;
+                    if(PlayActivity.getPlayPattern() == 0||PlayActivity.getPlayPattern() == 1) {
+                        if (PlayActivity.currentSongPosition < MainActivity.mList.size() - 1) {
+                            ++PlayActivity.currentSongPosition;
+                        } else {
+                            PlayActivity.currentSongPosition = 0;
+                        }
+                    }else if(PlayActivity.getPlayPattern() == 2){
+                        Random random = new Random(System.currentTimeMillis() >> 1);
+                        int i = random.nextInt(MainActivity.getmList().size());
+                        PlayActivity.currentSongPosition = i == PlayActivity.currentSongPosition ? (i * (i+1))% MainActivity.getmList().size() : i;
                     }
+                    PlayActivity.stat = 1;
                     cur_pos = PlayActivity.currentSongPosition;
                     PlayActivity.musicControl.play(MainActivity.mList.get(cur_pos).getPath());
                     updateSongInfoButton(mList.get(cur_pos));
@@ -262,11 +278,12 @@ public class MainActivity extends AppCompatActivity {
         List<Fragment> fragmentArr = new ArrayList<>();
         fragmentArr.add(new LocalMusicFragment());
         fragmentArr.add(new PictureFragment());
+        fragmentArr.add(new HomeInfoFragment());
 
         bottomNavigationView.getMenu().add(0, 0, 1, "首页").setIcon(R.drawable.tab_1);
         bottomNavigationView.getMenu().add(0, 1, 1, "图片").setIcon(R.drawable.tab_3);
         //navigationView.getMenu().add(0, 2, 1, "园地").setIcon(R.drawable.tab_3);
-        //navigationView.getMenu().add(0, 3, 1, "我的").setIcon(R.drawable.tab_4);
+        bottomNavigationView.getMenu().add(0, 3, 1, "我的").setIcon(R.drawable.tab_4);
         //禁止滑动
         viewPager.setUserInputEnabled(false);
         /**
@@ -278,12 +295,24 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
-
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 //设置导航栏选中位置
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                switch (position){
+                    case 0:
+                        searchNavi.setVisibility(View.VISIBLE);
+                        tv_title.setText("本地音乐");
+                        break;
+                    case 1:
+                        searchNavi.setVisibility(View.GONE);
+                        tv_title.setText("图图");
+                        break;
+                    case 2:
+                        searchNavi.setVisibility(View.GONE);
+                        break;
+                }
             }
 
             @Override
@@ -378,23 +407,6 @@ public class MainActivity extends AppCompatActivity {
         allList = readMusicSongs;
     }
 
-    private void showLocalMusicData() {
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        recyclerView.setLayoutManager(layoutManager);
-//        mAdapter = new MusicListAdapter(MainActivity.this);
-//        recyclerView.setAdapter(mAdapter);
-    }
-//    private void replaceFragment(Fragment fragment) {
-//        //获取默认的Fragment管理器
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        //开始事务
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        //创建替换事件，（把布局里的fragment控件替换成传进来的具体的fragment）
-//        transaction.replace(R.id.fragment_local_music,fragment);
-//        //提交事务
-//        transaction.commit();
-//    }
 
     private void updateSongInfoButton(Song song) {
         cur_pos = PlayActivity.currentSongPosition;

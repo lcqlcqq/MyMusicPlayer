@@ -114,7 +114,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-
             android:background="@drawable/ic_baseline_repeat_24" />
 
         <ImageButton
@@ -148,6 +147,5 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="24dp"
             android:background="@drawable/ic_baseline_queue_music_24" />
-
     </LinearLayout>
 </LinearLayout>

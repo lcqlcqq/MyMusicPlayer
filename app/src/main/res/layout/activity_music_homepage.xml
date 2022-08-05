@@ -17,16 +17,17 @@
             android:layout_marginTop="6dp"
             android:text="本地音乐"
             android:textColor="@color/white"
-            android:textSize="28sp" />
+            android:textSize="25sp" />
 
         <LinearLayout
+            android:id="@+id/search_navi"
             android:layout_marginTop="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/btn_search_list_filter"
+                android:id="@+id/btn_clear_search_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

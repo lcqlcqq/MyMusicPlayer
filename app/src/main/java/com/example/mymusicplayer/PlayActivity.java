@@ -31,6 +31,7 @@ import com.example.mymusicplayer.utils.MusicUtil;
 import com.example.mymusicplayer.utils.NotificationUtil;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -56,7 +57,9 @@ public class PlayActivity extends AppCompatActivity {
     private ImageButton patternBtn;
     private ImageButton listBtn;
     private static int play_pattern; //0列表循环，1单曲循环，2随机
-
+    public static int getPlayPattern(){
+        return play_pattern;
+    }
     public static int currentSongPosition = -1;
     private boolean isSameAsCurSong = true;
     public static int stat = 1;
@@ -275,8 +278,10 @@ public class PlayActivity extends AppCompatActivity {
             }
         }else if(play_pattern == 2){
             //随机
+            Random random = new Random(System.currentTimeMillis() >> 1);
+            int i = random.nextInt(MainActivity.getmList().size());
+            currentSongPosition = i == currentSongPosition ? (i * (i+1))% MainActivity.getmList().size() : i;
         }
-
         stat = 1;
         pauseBtn.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24);
         displaySongInformation(MainActivity.getmList().get(currentSongPosition));
@@ -298,6 +303,9 @@ public class PlayActivity extends AppCompatActivity {
             }
         }else if(play_pattern == 2){
             //随机
+            Random random = new Random(System.currentTimeMillis() >> 1);
+            int i = random.nextInt(MainActivity.getmList().size());
+            currentSongPosition = i == currentSongPosition ? (i * (i+1))% MainActivity.getmList().size() : i;
         }
         stat = 1;
         //更新当前页和通知的信息
@@ -358,10 +366,6 @@ public class PlayActivity extends AppCompatActivity {
      */
     public void startRotateIcon() {
         if (songIcon != null && objectAnimator != null) {
-            //Animation animation = AnimationUtils.loadAnimation(this, R.anim.img_rotate);
-            //LinearInterpolator lin = new LinearInterpolator();//设置动画匀速运动
-            //animation.setInterpolator(lin);
-            //songIcon.startAnimation(animation);
             objectAnimator.resume();
         }
     }
@@ -371,7 +375,7 @@ public class PlayActivity extends AppCompatActivity {
      */
     public void stopRotateIcon() {
         //保存当前转的角度
-        if (objectAnimator.isPaused()) return;
+        if (objectAnimator.isPaused() || songIcon == null || objectAnimator == null) return;
         float currentPlayTime = objectAnimator.getCurrentPlayTime();
         rotateAngle += (float) (currentPlayTime / (float) ANIMATION_DURATION) * 360f;
         if (rotateAngle >= 360f) rotateAngle -= 360f;
