@@ -28,6 +28,12 @@ public class MusicPlayService extends Service {
     public void onCreate() {
         super.onCreate();
         mediaPlayer = new MediaPlayer();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+
+            }
+        });
     }
 
     public void addTimer() {

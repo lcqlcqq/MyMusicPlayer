@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.mainViewPager);
         bottomNavigationView = findViewById(R.id.navigationView);
         permissionsRequest();
+        initNavigationView();
         btn_search.setVisibility(View.GONE);
         //editText.setVisibility(View.INVISIBLE);
 
@@ -397,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
         setmList(getAllList());
         Log.e("lcq", "mList: " + mList.size() + ", allList: " + allList.size());
         if (allList.size() > 0) {
-            initNavigationView();
+
         } else {
             show("没有发现歌曲");
         }

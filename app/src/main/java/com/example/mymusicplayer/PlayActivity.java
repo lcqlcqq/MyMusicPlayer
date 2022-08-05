@@ -211,11 +211,15 @@ public class PlayActivity extends AppCompatActivity {
             play_pattern++;
             patternBtn.setBackgroundResource(R.drawable.ic_baseline_repeat_one_24);
             Toast.makeText(getApplicationContext(),"单曲循环", Toast.LENGTH_SHORT).show();
+            if(!MusicPlayService.mediaPlayer.isLooping()) {
+                MusicPlayService.mediaPlayer.setLooping(true);
+            }
         }
         else if(play_pattern == 1){
             play_pattern++;
             patternBtn.setBackgroundResource(R.drawable.ic_baseline_shuffle_24);
             Toast.makeText(getApplicationContext(),"随机播放", Toast.LENGTH_SHORT).show();
+            MusicPlayService.mediaPlayer.setLooping(false);
         }
         else {
             play_pattern=0;
