@@ -90,8 +90,9 @@ public class MusicPlayService extends Service {
             timer.cancel();
         if (mediaPlayer == null)
             return;
-        if (mediaPlayer.isPlaying())
+        if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
+        }
         mediaPlayer.release();
         mediaPlayer = null;
     }

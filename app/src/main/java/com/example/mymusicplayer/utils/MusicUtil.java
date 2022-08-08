@@ -31,7 +31,6 @@ public class MusicUtil {
         //final ArrayList<File> songs = getMusicList(Environment.getExternalStorageDirectory());
 
         ArrayList<Song> musicList = new ArrayList<>();
-        //
         //System.out.println(Environment.getExternalStorageDirectory().getPath());Uri.parse(Environment.getExternalStorageDirectory().getPath())
         Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Audio.Media.IS_MUSIC,
                 null, MediaStore.Audio.Media.IS_MUSIC);
@@ -67,7 +66,7 @@ public class MusicUtil {
      * @return
      */
     public static Bitmap getAlbumPicture(Context context, String path, int type) {
-        Log.e("lcq", "path: " + path);
+        Log.e("lcq", "album_path: " + path);
         //歌曲检索
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         try {
@@ -98,6 +97,7 @@ public class MusicUtil {
             albumPicture = Bitmap.createBitmap(albumPicture, 0, 0, width, height, matrix, false);
         } else {
             // 从歌曲文件读取不出来专辑图片时用来代替的默认专辑图片
+            if(context == null) return null;
             if (type == 1) {
                 //Activity中显示
                 albumPicture = BitmapFactory.decodeResource(context.getResources(), R.mipmap.icon_music);

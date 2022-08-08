@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/notification_icon"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:targetApi="28">
         <activity

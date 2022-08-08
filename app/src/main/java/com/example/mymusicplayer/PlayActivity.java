@@ -83,8 +83,38 @@ public class PlayActivity extends AppCompatActivity {
                     //歌曲时长、当前进度
                     int duration = data.getInt("duration");
                     int currentPosition = data.getInt("currentPosition");
-                    if ((duration - currentPosition) < 500) {
-                        Log.d("lcq", "当前歌曲播放完了");
+                    if ( duration == currentPosition) {
+                        Log.d("lcq", "播完了。。。");
+                        if(play_pattern != 1) {
+
+                            if(PlayActivity.getPlayPattern() == 0) {
+                                if (PlayActivity.currentSongPosition < MainActivity.getmList().size() - 1) {
+                                    ++PlayActivity.currentSongPosition;
+                                } else {
+                                    PlayActivity.currentSongPosition = 0;
+                                }
+                            }else if(PlayActivity.getPlayPattern() == 2){
+                                Random random = new Random(System.currentTimeMillis());
+                                int i = random.nextInt(MainActivity.getmList().size());
+                                PlayActivity.currentSongPosition = i == PlayActivity.currentSongPosition ? (i * (i+1))% MainActivity.getmList().size() : i;
+                            }
+                            PlayActivity.stat = 1;
+                            MainActivity.setCurPos(currentSongPosition);
+                            Song song = MainActivity.getmList().get(currentSongPosition);
+                            PlayActivity.musicControl.play(song.getPath());
+                            if(songName != null && songSinger != null && songIcon != null) {
+                                songName.setText(song.getSong());
+                                songSinger.setText(song.getSinger());
+                                songIcon.setImageBitmap(MusicUtil.getAlbumPicture(null, song.getPath(), 3));  //大图
+                            }
+                            notificationUtil.getRemoteViews().setTextViewText(R.id.music_name_navi, song.getSong());
+                            notificationUtil.getRemoteViews().setTextViewText(R.id.music_singer_navi, song.getSinger());
+                            notificationUtil.getRemoteViews().setImageViewBitmap(R.id.img_navi, MusicUtil.getAlbumPicture(null, song.getPath(), 2));
+                            notificationUtil.notifyUpdateUI();
+                            MainActivity.songName.setText(song.getSong());
+                            MainActivity.songSinger.setText(song.getSinger());
+                            MainActivity.songIcon.setImageBitmap(MusicUtil.getAlbumPicture(null, song.getPath(), 1));
+                        }
                     }
                     seekBar.setMax(duration);
                     seekBar.setProgress(currentPosition);
@@ -282,15 +312,16 @@ public class PlayActivity extends AppCompatActivity {
             }
         }else if(play_pattern == 2){
             //随机
-            Random random = new Random(System.currentTimeMillis() >> 1);
+            Random random = new Random(System.currentTimeMillis());
             int i = random.nextInt(MainActivity.getmList().size());
-            currentSongPosition = i == currentSongPosition ? (i * (i+1))% MainActivity.getmList().size() : i;
+            currentSongPosition = i == currentSongPosition ? (i * 2)% MainActivity.getmList().size() : i;
         }
+        musicControl.play(MainActivity.getmList().get(currentSongPosition).getPath());
         stat = 1;
         pauseBtn.setBackgroundResource(R.drawable.ic_baseline_pause_circle_outline_24);
         displaySongInformation(MainActivity.getmList().get(currentSongPosition));
         startRotateIcon();
-        musicControl.play(MainActivity.getmList().get(currentSongPosition).getPath());
+
         notificationUtil.getRemoteViews().setImageViewResource(R.id.btn_pause_navi, R.drawable.ic_baseline_pause_circle_outline_24_black);
         displaySongInfoOnNavi(MainActivity.getmList().get(currentSongPosition));
     }

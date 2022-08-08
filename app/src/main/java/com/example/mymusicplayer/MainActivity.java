@@ -81,19 +81,19 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv_title;
 
-    private static TextView songName;
+    public static TextView songName;
 
     public static void setSongName(int pos) {
         songName.setText(mList.get(pos).getSong());
     }
 
-    private static TextView songSinger;
+    public static TextView songSinger;
 
     public static void setSongSinger(int pos) {
         songSinger.setText(mList.get(pos).getSinger());
     }
 
-    private static ImageView songIcon;
+    public static ImageView songIcon;
 
     public static void setSongIcon(int pos, Context context) {
         songIcon.setImageBitmap(MusicUtil.getAlbumPicture(context, MainActivity.getmList().get(pos).getPath(), 1));

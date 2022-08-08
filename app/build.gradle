@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    compileSdk 28
+    compileSdk 29
 
     defaultConfig {
         applicationId "com.example.mymusicplayer"
-        minSdk 21
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
